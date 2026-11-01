@@ -1,0 +1,12 @@
+[project]
+name = "baka"
+version = "0.1.0"
+dependencies = [
+    "typer>=0.27.3",
+    "requests>=2.34.2",
+    "InquirerPy>=0.3.4",
+    "typing_extensions>=4.16.0"
+]
+
+[project.scripts]
+baka = "main:app"

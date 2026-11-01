@@ -1,0 +1,10 @@
+# Caching
+__pycache__/
+
+# Build
+*.egg-info/
+.eggs/
+
+# Local testing
+test/
+auth.json
