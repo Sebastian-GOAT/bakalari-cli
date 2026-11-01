@@ -1,4 +1,6 @@
 import json
+import typer
+from rich import print as stdout
 
 def load_config():
     try:
@@ -14,3 +16,11 @@ def load_config():
     # If the config file can't be loaded or data is missing
     except:
         return None
+
+def load_config_formatted():
+
+    config = load_config()
+    if config: return config
+
+    stdout("[bold red]❌ ERROR: you are not logged in")
+    raise typer.Exit(code=1)

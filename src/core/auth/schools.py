@@ -1,6 +1,7 @@
 import requests
 import typer
 import urllib.parse
+from rich import print as stdout
 
 def get_cities():
 
@@ -13,7 +14,7 @@ def get_cities():
     if res.ok:
         return res.json()
     else:
-        typer.secho("❌ ERROR: couldn't reach the Bakaláři servers", fg=typer.colors.RED, bold=True)
+        stdout("[bold red]❌ ERROR: couldn't reach the Bakaláři servers")
         raise typer.Exit(code=1)
 
 def get_schools(city: str):
@@ -29,5 +30,5 @@ def get_schools(city: str):
         data = res.json()
         return data['schools']
     else:
-        typer.secho("❌ ERROR: couldn't reach the Bakaláři servers", fg=typer.colors.RED, bold=True)
+        stdout("[bold red]❌ ERROR: couldn't reach the Bakaláři servers")
         raise typer.Exit(code=1)

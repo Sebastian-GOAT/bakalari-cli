@@ -1,4 +1,5 @@
 import typer
+from rich import print as stdout
 from rich.console import Console
 from InquirerPy import inquirer
 from InquirerPy.base.control import Choice
@@ -34,13 +35,13 @@ def login(
     # Direct arguments
     if args:
         if len(args) != 3:
-            typer.secho("❌ ERROR: you must provide all 3 arguments", fg=typer.colors.RED, bold=True)
+            stdout("[bold red]❌ ERROR: you must provide all 3 arguments")
             raise typer.Exit(code=1)
 
         config = load_config()
         if config:
-            typer.secho(f"You are already logged in at {config[2]}", fg=typer.colors.RED, bold=True)
-            return
+            stdout(f"[bold red]❌ ERROR: you are already logged in at {config[2]}")
+            raise typer.Exit(code=1)
 
         (school_url, username, password) = args
 
@@ -55,14 +56,14 @@ def login(
         with open('auth.json', 'w', encoding='utf-8') as file:
             json.dump(data, file, indent=4, ensure_ascii=False)
 
-        typer.secho(f'Successfully logged in as {username}', fg=typer.colors.GREEN, bold=True)
+        stdout(f'[bold green]Successfully logged in as {username}.')
 
         return
 
     # Load the auth config
     config = load_config()
     if config:
-        typer.secho(f"You are already logged in at {config[2]}", fg=typer.colors.RED, bold=True)
+        stdout(f"You are already logged in at {config[2]}")
         return
 
     # Get the city
@@ -120,12 +121,20 @@ def login(
     with open('auth.json', 'w', encoding='utf-8') as file:
         json.dump(data, file, indent=4, ensure_ascii=False)
 
-    typer.secho(f'Successfully logged in as {username}', fg=typer.colors.GREEN, bold=True)
+    stdout(f'[bold green]Successfully logged in as {username}.')
 
 @app.command('logout')
 def logout():
+
+    config = load_config()
+
+    if not config:
+        stdout("[bold red]❌ ERROR: you are already logged out")
+        raise typer.Exit(code=1)
+
     file = Path('auth.json')
     file.unlink(missing_ok=True)
+    stdout(f'[bold green]Successfully logged out.')
 
 if __name__ == "__main__":
     app()

@@ -1,5 +1,6 @@
 import requests
 import typer
+from rich import print as stdout
 
 def login(school_url: str, username: str, password: str):
 
@@ -13,7 +14,11 @@ def login(school_url: str, username: str, password: str):
         'password': password
     }
 
-    res = requests.post(f'{school_url}/api/login', headers=headers, data=payload)
+    base_url = school_url
+    path = '/api/login'
+    url = f'{base_url.rstrip('/')}/{path.lstrip('/')}'
+
+    res = requests.post(url, headers=headers, data=payload)
 
     if res.ok:
         data = res.json()
@@ -21,7 +26,7 @@ def login(school_url: str, username: str, password: str):
         refresh_token = data['refresh_token']
         return (access_token, refresh_token)
     else:
-        typer.secho("❌ ERROR: something went wrong", fg=typer.colors.RED, bold=True)
+        stdout("[bold red]❌ ERROR: something went wrong")
         raise typer.Exit(code=1)
 
 def refresh_token(school_url: str, token: str):
@@ -35,7 +40,11 @@ def refresh_token(school_url: str, token: str):
         'refresh_token': token
     }
 
-    res = requests.post(f'{school_url}/api/login', headers=headers, data=payload)
+    base_url = school_url
+    path = '/api/login'
+    url = f'{base_url.rstrip('/')}/{path.lstrip('/')}'
+
+    res = requests.post(url, headers=headers, data=payload)
 
     if res.ok:
         data = res.json()
@@ -43,5 +52,5 @@ def refresh_token(school_url: str, token: str):
         refresh_token = data['refresh_token']
         return (access_token, refresh_token)
     else:
-        typer.secho("❌ ERROR: something went wrong", fg=typer.colors.RED, bold=True)
+        stdout("[bold red]❌ ERROR: something went wrong")
         raise typer.Exit(code=1)
