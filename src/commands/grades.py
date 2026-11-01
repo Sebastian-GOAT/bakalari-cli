@@ -10,7 +10,7 @@ app = typer.Typer()
 @app.command('grades')
 def grades(
     args: Annotated[
-        Optional[List[str]], 
+        Optional[List[str]],
         typer.Argument(help="baka grades [...subjects]")
     ] = None
 ):
@@ -37,10 +37,13 @@ def grades(
 
             try:
                 if is_points:
-                    color = 'white'
+                    color = 'cyan'
                 else:
-                    grade_value = int(text)
-                    color = colors[grade_value - 1]
+                    if text == 'N' or text == '?':
+                        color = 'red'
+                    else:
+                        grade_value = int(text)
+                        color = colors[grade_value - 1]
             except:
                 color = 'white'
 

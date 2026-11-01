@@ -5,7 +5,8 @@ dependencies = [
     "typer>=0.27.3",
     "requests>=2.34.2",
     "InquirerPy>=0.3.4",
-    "typing_extensions>=4.16.0"
+    "typing_extensions>=4.16.0",
+    "plyer>=2.1.0"
 ]
 
 [project.scripts]

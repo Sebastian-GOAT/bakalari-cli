@@ -17,5 +17,5 @@ def get_grades(access_token: str, refresh_token: str, school_url: str):
         data = res.json()
         return data['Subjects']
     else:
-        stdout("[bold red]❌ ERROR: couldn't fetch the subjects")
+        stdout("[bold red]❌ ERROR: couldn't fetch the grades")
         raise typer.Exit(code=1)
