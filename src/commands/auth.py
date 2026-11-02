@@ -4,12 +4,10 @@ from rich.console import Console
 from InquirerPy import inquirer
 from InquirerPy.base.control import Choice
 from InquirerPy.utils import get_style
-import json
-from pathlib import Path
 from typing_extensions import Annotated, Optional, List
 from core.auth.schools import get_cities, get_schools
 from core.auth import tokens
-from core.auth.load_config import load_config
+from core.auth.load_config import delete_config, load_config, save_config
 
 app = typer.Typer()
 console = Console()
@@ -31,7 +29,6 @@ def login(
         typer.Argument(help="baka login [school_url] [username] [password]")
     ] = None
 ):
-
     # Direct arguments
     if args:
         if len(args) != 3:
@@ -48,23 +45,19 @@ def login(
         with console.status("[bold white]Logging in...", spinner="dots"):
             (access_token, refresh_token) = tokens.login(school_url, username, password)
 
-        data = {
-            'access_token': access_token,
-            'refresh_token': refresh_token,
-            'school_url': school_url
-        }
-        with open('auth.json', 'w', encoding='utf-8') as file:
-            json.dump(data, file, indent=4, ensure_ascii=False)
+        with console.status("[bold white]Loading...", spinner="dots"):
+            save_config(access_token, refresh_token, school_url)
 
         stdout(f'[bold green]Successfully logged in as {username}.')
 
         return
 
     # Load the auth config
-    config = load_config()
-    if config:
-        stdout(f"You are already logged in at {config[2]}")
-        return
+    with console.status("[bold white]Loading...", spinner="dots"):
+        config = load_config()
+        if config:
+            stdout(f"You are already logged in at {config[2]}")
+            return
 
     # Get the city
     with console.status("[bold white]Loading...", spinner="dots"):
@@ -113,27 +106,23 @@ def login(
     with console.status("[bold white]Logging in...", spinner="dots"):
         (access_token, refresh_token) = tokens.login(school_url, username, password)
 
-    data = {
-        'access_token': access_token,
-        'refresh_token': refresh_token,
-        'school_url': school_url
-    }
-    with open('auth.json', 'w', encoding='utf-8') as file:
-        json.dump(data, file, indent=4, ensure_ascii=False)
+    save_config(access_token, refresh_token, school_url)
 
     stdout(f'[bold green]Successfully logged in as {username}.')
 
 @app.command('logout')
 def logout():
 
-    config = load_config()
+    with console.status("[bold white]Loading...", spinner="dots"):
+        config = load_config()
 
     if not config:
         stdout("[bold red]❌ ERROR: you are already logged out")
         raise typer.Exit(code=1)
 
-    file = Path('auth.json')
-    file.unlink(missing_ok=True)
+    with console.status("[bold white]Loading...", spinner="dots"):
+        delete_config()
+    
     stdout(f'[bold green]Successfully logged out.')
 
 if __name__ == "__main__":

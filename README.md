@@ -26,6 +26,8 @@ baka login
 baka login [school_url] [username] [password]
 ```
 
+Access and refresh tokens are stored in the operating system keyring. The `auth.json` file contains only the school URL. Existing `auth.json` files with tokens are migrated to the keyring the next time the configuration is loaded.
+
 ### Grades
 
 ```bash
@@ -85,9 +87,9 @@ baka grades --final M CHE ELE [...subjects]
 baka subjects
 
 # Output
-M   |   Mathematics              | Bc. Adin Peterson
-HAR |   Hardware                 | Ing. Bc. Patrick Stephenson
-ELE |   Electrical engineering   | Ing. John Smith, Ph.D.
+M     |   Mathematics              | Bc. Adin Peterson
+HAR   |   Hardware                 | Ing. Bc. Patrick Stephenson
+ELE   |   Electrical engineering   | Ing. John Smith, Ph.D.
 ...
 ```
 

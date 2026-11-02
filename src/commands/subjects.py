@@ -1,16 +1,20 @@
 import typer
 from rich import print as stdout
+from rich.console import Console
 from core.auth.load_config import load_config_formatted
 from core.subjects.subjects import get_subjects
 
 app = typer.Typer()
+console = Console()
 
 @app.command('subjects')
 def subjects():
 
-    (access_token, refresh_token, school_url) = load_config_formatted()
+    with console.status("[bold white]Loading...", spinner="dots"):
+        (access_token, refresh_token, school_url) = load_config_formatted()
 
-    subjs = get_subjects(access_token, refresh_token, school_url)
+    with console.status("[bold white]Fetching the subjects...", spinner="dots"):
+        subjs = get_subjects(access_token, refresh_token, school_url)
 
     max_len = max((len(subject['SubjectName']) for subject in subjs), default=0)
 

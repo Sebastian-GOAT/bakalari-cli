@@ -7,30 +7,12 @@ from core.data.tokens import update_tokens
 
 path = '/api/3/marks'
 
-# Previous data + first population
 prev_grade_ids = set()
-
-(access_token, refresh_token, school_url) = load_config_formatted()
-
-res = get_response(access_token, school_url, path)
-
-if res.status_code == 401:
-    update_tokens(refresh_token, school_url)
-    res = get_response(access_token, school_url, path)
-
-if res.ok:
-    data = res.json()
-    subjects = data['Subjects']
-
-    for subject in subjects:
-        for grade in subject['Marks']:
-            grade_id = grade['Id']
-            prev_grade_ids.add(grade_id)
-else:
-    stdout("[bold red]❌ ERROR: couldn't fetch the grades")
+initialized = False
 
 # Fetching function
 def fetch():
+    global initialized
 
     (access_token, refresh_token, school_url) = load_config_formatted()
 
@@ -38,11 +20,19 @@ def fetch():
 
     if res.status_code == 401:
         update_tokens(refresh_token, school_url)
+        (access_token, refresh_token, school_url) = load_config_formatted()
         res = get_response(access_token, school_url, path)
 
     if res.ok:
         data = res.json()
         subjects = data['Subjects']
+
+        if not initialized:
+            for subject in subjects:
+                for grade in subject['Marks']:
+                    prev_grade_ids.add(grade['Id'])
+            initialized = True
+            return
 
         for subject in subjects:
             subject_name = subject['Subject']['Name']
