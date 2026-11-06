@@ -1,0 +1,22 @@
+[
+    {
+        "YearInSchool": 1,
+        "Semesters": [
+            {
+                "SemesterName": "1. ",
+                "Grades": [
+                    {
+                        "SubjectName": "Matematika",
+                        "SubjectAbbrev": "M",
+                        "GradeText": "2"
+                    },
+                    {
+                        "SubjectName": "Český jazyk a literatura",
+                        "SubjectAbbrev": "ČJL",
+                        "GradeText": "1"
+                    }
+                ]
+            }
+        ]
+    }
+]

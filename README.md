@@ -75,7 +75,17 @@ baka grades --final M CHE ELE [...subjects]
 
 1. Semester
 
+Mathematics              |   2
+Chemistry                |   5
+Electrical engineering   |   1
+
 2. Semester
+
+Mathematics              |   1
+Chemistry                |   4
+Electrical engineering   |   1
+
+----- Year 2 -----
 
 ...
 ```
@@ -87,9 +97,9 @@ baka grades --final M CHE ELE [...subjects]
 baka subjects
 
 # Output
-M     |   Mathematics              | Bc. Adin Peterson
-HAR   |   Hardware                 | Ing. Bc. Patrick Stephenson
-ELE   |   Electrical engineering   | Ing. John Smith, Ph.D.
+M     |   Mathematics              | Adin Peterson
+HAR   |   Hardware                 | Patrick Stephenson
+ELE   |   Electrical engineering   | John Smith
 ...
 ```
 
